@@ -1,0 +1,55 @@
+name: Run Jest Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['14', '16', '18']  # Testing across multiple Node.js versions
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install npm dependencies
+      run: npm install
+
+    - name: Run Jest Test
+      run: npx jest upload.spec.ts
+
+    - name: Archive test results
+      uses: actions/upload-artifact@v3
+      if: always()  # Ensure this step runs even if previous steps failed
+      with:
+        name: jest-results
+        path: src/results
+
+  comment:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: jest-results
+
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: "### 🧪 Test Results\nPlease see the attached test results."
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
