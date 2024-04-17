@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: ['14', '16', '18']  # Testing across multiple Node.js versions
+        node-version: ['14', '16', '18']
 
     steps:
     - name: Checkout code
@@ -33,7 +33,7 @@ jobs:
 
     - name: Archive test results
       uses: actions/upload-artifact@v3
-      if: always()  # Ensure this step runs even if previous steps failed
+      if: always() # Ensure this step runs even if previous steps failed
       with:
         name: jest-results
         path: src/results
@@ -41,7 +41,7 @@ jobs:
   comment:
     needs: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    if: always()  # This will ensure it runs, but internal logic is needed to handle when to comment
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v3
