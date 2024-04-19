@@ -28,3 +28,6 @@ export function upload(files: string[]): Promise<any> {
   return req
 }
 
+export function data(options = {name: "", age: '', city: ""}) {
+  return options;
+}

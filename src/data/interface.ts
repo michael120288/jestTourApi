@@ -15,6 +15,7 @@ export interface Tour {
   password: string;
   birthdate?: Date;
   registeredAt?: Date;
+  startDates: string[] | null | undefined;
 }
 // interface Employee extends User{
 //     employeeId?: number,

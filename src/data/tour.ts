@@ -1,10 +1,12 @@
-export const tour = {
-  name: "TourForn53",
+import { Tour } from "./interface";
+
+export const tour:Tour = {
+  name: "TourForn69",
   duration: 10,
   description: "Could be",
   maxGroupSize: 10,
   summary: "Test tour",
-  difficulty: difficulty(),
+  difficulty: "medium",
   price: 100,
   rating: 4.8,
   imageCover: "tour-3-cover.jpg",
